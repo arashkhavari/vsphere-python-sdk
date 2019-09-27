@@ -3,10 +3,7 @@ from pyVim.connect import SmartConnect, Disconnect
 import vmutils
 import ssl
 import csv
-
 path = raw_input("get the fakin path :\n")
-
-
 with open( path, "r") as f:
     reader = csv.reader(f, delimiter=',')
     line_counter = 0
@@ -20,14 +17,12 @@ with open( path, "r") as f:
             pool_resource = i[5]
             cpu_number = i[6]
             memory_on_mb = i[7]
-
             si = None
             try:
                 si = SmartConnect(host=vcenter, user=username, pwd=password, port=443,
                                   sslContext=ssl._create_unverified_context())
             except IOError, e:
                 pass
-
             template_vm = vmutils.get_vm_by_name(si, template_name)
             vmconf = vim.vm.ConfigSpec(numCPUs=int(cpu_number), memoryMB=int(memory_on_mb))
             adaptermap = vim.vm.customization.AdapterMapping()
@@ -43,9 +38,7 @@ with open( path, "r") as f:
             cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, location=relocateSpec, customization=None,
                                          config=vmconf)
             clone = template_vm.Clone(name=new_vm_name, folder=template_vm.parent, spec=cloneSpec)
-
             Disconnect(si)
-
             line_counter += 1
         else:
             vcenter = i[0]
@@ -56,7 +49,6 @@ with open( path, "r") as f:
             pool_resource = i[5]
             cpu_number = i[6]
             memory_on_mb = i[7]
-
             si = None
             try:
                 si = SmartConnect(host=vcenter, user=username, pwd=password, port=443,
@@ -78,7 +70,5 @@ with open( path, "r") as f:
             relocateSpec = vim.vm.RelocateSpec(pool=resource_pool)
             cloneSpec = vim.vm.CloneSpec(powerOn=True, template=False, location=relocateSpec, customization=None, config=vmconf)
             clone = template_vm.Clone(name=new_vm_name, folder=template_vm.parent, spec=cloneSpec)
-
             Disconnect(si)
-
             line_counter += 1
