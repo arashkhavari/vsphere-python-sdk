@@ -5,7 +5,7 @@ import ssl
 import csv
 path = raw_input("get the fakin path :\n")
 with open( path, "r") as f:
-  reader = csv.reader(f, delimiter=',')
+  reader = csv.reader(f, delimiter=':')
   line_counter = 0
   for i in reader:
     if line_counter == 0:
